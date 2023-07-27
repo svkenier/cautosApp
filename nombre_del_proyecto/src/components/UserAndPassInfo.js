@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import useForm from "../hooks/useForm";
 
 const UserAndPassInfo = () => {
-  const { values, handleChange } = useFormikContext();
+  const { values, handleChange,handleBlur,errors,touched } = useFormikContext();
 
 
   return (
@@ -21,18 +21,24 @@ const UserAndPassInfo = () => {
           onChangeText={handleChange("userName")}
           name="userName"
           value={values.userName}
+          helperText={errors.userName && touched.userName && <Text style={styles.error}>{errors.userName}</Text> }
+          onBlur={handleBlur("userName")}
         />
         <CustomInput
           placeholder={"Contraseña"}
           onChangeText={handleChange("password")}
           name="password"
           value={values.password}
+          helperText={errors.password && touched.password && <Text style={styles.error}>{errors.password}</Text> }
+          onBlur={handleBlur("password")}
         />
         <CustomInput
           placeholder={"Confirmar Contraseña"}
           onChangeText={handleChange("confirmPassword")}
           name="confirmPassword"
           value={values.confirmPassword}
+          helperText={errors.confirmPassword && touched.confirmPassword && <Text style={styles.error}>{errors.confirmPassword}</Text> }
+          onBlur={handleBlur("confirmPassword")}
         />
       </View>
     </View>
@@ -59,6 +65,11 @@ const styles = StyleSheet.create({
     gap: 20,
     width: "98%",
     alignItems: "flex-end",
+  },
+  error:{
+    color:"red",
+    fontWeight:"bold",
+    fontSize:10,
   },
 });
 

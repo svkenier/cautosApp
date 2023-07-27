@@ -1,10 +1,10 @@
 import React from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import CustomInput from "../components/CustomInput";
-import { useFormikContext } from "formik";
+import { Formik, useFormikContext } from "formik";
 
 const PersonalInfo = () => {
-  const { values, handleChange } = useFormikContext();
+  const { values,errors,touched, handleChange,handleBlur } = useFormikContext();
 
   
   return (
@@ -19,13 +19,18 @@ const PersonalInfo = () => {
           onChangeText={handleChange("name")}
           name="name"
           value={values.name}
-        />
+          helperText={errors.name && touched.name && <Text style={styles.error}>{errors.name}</Text> }
+          onBlur={handleBlur("name")}
+          />
+          
 
         <CustomInput
           placeholder={"Apellido"}
           onChangeText={handleChange("lastName")}
           name="lastName"
           value={values.lastName}
+          helperText={errors.lastName && touched.lastName && <Text style={styles.error}>{errors.lastName}</Text> }
+          onBlur={handleBlur("lastName")}
         />
 
         <CustomInput
@@ -33,18 +38,24 @@ const PersonalInfo = () => {
           onChangeText={handleChange("email")}
           name="email"
           value={values.email}
+          helperText={errors.email && touched.email && <Text style={styles.error}>{errors.email}</Text> }
+          onBlur={handleBlur("email")}
         />
         <CustomInput
           placeholder={"Cedula"}
           name="cedula"
           onChangeText={handleChange("cedula")}
           value={values.cedula}
+          helperText={errors.cedula && touched.cedula && <Text style={styles.error}>{errors.cedula}</Text> }
+          onBlur={handleBlur("cedula")}
         />
         <CustomInput
           placeholder={"Telefono"}
           onChangeText={handleChange("phone")}
           name="phone"
           value={values.phone}
+          helperText={errors.cedula && touched.phone && <Text style={styles.error}>{errors.phone}</Text> }
+          onBlur={handleBlur("phone")}
         />
       </View>
     </View>
@@ -68,9 +79,14 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   containerInput: {
-    gap: 20,
-    width: "98%",
+    gap:10,
+    width: "90%",
     alignItems: "flex-end",
+  },
+  error:{
+    color:"red",
+    fontWeight:"bold",
+    fontSize:10,
   },
 });
 

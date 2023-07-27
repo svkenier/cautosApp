@@ -7,7 +7,7 @@ import useForm from "../hooks/useForm";
 
 const AddressInfo = () => {
   // const { handleChange, handleSubmit } = useForm();
-  const { values, handleChange } = useFormikContext();
+  const { values, handleChange,handleBlur,touched,errors } = useFormikContext();
 
 
   return (
@@ -21,12 +21,16 @@ const AddressInfo = () => {
           onChangeText={handleChange("city")}
           name="city"
           value={values.city}
+          helperText={errors.city && touched.city && <Text style={styles.error}>{errors.city}</Text> }
+          onBlur={handleBlur("city")}
         />
         <CustomInput
           placeholder={"Municipio"}
           onChangeText={handleChange("town")}
           name="city"
           value={values.town}
+          helperText={errors.town && touched.town && <Text style={styles.error}>{errors.town}</Text> }
+          onBlur={handleBlur("town")}
         />
       </View>
     </View>
@@ -54,6 +58,11 @@ const styles = StyleSheet.create({
     gap: 20,
     width: "98%",
     alignItems: "flex-end",
+  },
+  error:{
+    color:"red",
+    fontWeight:"bold",
+    fontSize:10,
   },
 });
 

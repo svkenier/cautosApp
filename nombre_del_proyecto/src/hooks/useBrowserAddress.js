@@ -1,8 +1,8 @@
 import React from 'react'
 import { useState } from 'react'
 
-const useBrowserAddress = () => {
-  const [address, setAddress] = useState("Avenida Guajira, Zona Industrial Norte, Maracaibo 4001, Zulia")
+const useBrowserAddress = (destinationAddress) => {
+  const [address, setAddress] = useState(destinationAddress)
 
 
   return {

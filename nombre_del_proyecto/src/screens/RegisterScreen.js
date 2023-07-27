@@ -10,14 +10,17 @@ import {
 import StepperForm from "../components/StepperForm";
 import { MaterialIcons } from "@expo/vector-icons";
 import LogoCautos from "../components/LogoCautos";
+import {useNavigation} from "@react-navigation/native"
 
-const RegisterScreen = ({ closeAllModals }) => {
+const RegisterScreen = () => {
+  const navigation = useNavigation()
+
   return (
     <ScrollView style={styles.fondo}>
       <SafeAreaView style={styles.root}>
         <View style={styles.title}>
           <View style={styles.icon}>
-            <Pressable onPress={closeAllModals}>
+            <Pressable onPress={() => navigation.goBack()}>
               <MaterialIcons name="keyboard-backspace" size={50} color="#fff" />
             </Pressable>
           </View>
@@ -39,6 +42,8 @@ const styles = StyleSheet.create({
   root: {
     alignItems: "center",
     padding: 10,
+   
+    
   },
   containerButton: {
     width: "70%",
@@ -74,6 +79,8 @@ const styles = StyleSheet.create({
   fondo: {
     width: "100%",
     height: "100%",
+    backgroundColor:
+    "linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)",
   },
   stepForm: {
     height: "100%",

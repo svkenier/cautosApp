@@ -1,4 +1,4 @@
-import { View, StyleSheet, SafeAreaView } from "react-native";
+import { View, StyleSheet, SafeAreaView,Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
@@ -11,9 +11,11 @@ import { Entypo } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import {useNavigation} from "@react-navigation/native"
 
 const MapScreen = () => {
-  const { address } = useBrowserAddress("Parque Rafael Urdaneta, Avenida Padilla Calle 93, Maracaibo, Zulia");
+  const navigation = useNavigation()
+  const { address } = useBrowserAddress("Parque Rafael Urdaneta, Av. Padilla C. 93, Maracaibo 4001, Zulia");
   const [origin, setOrigin] = useState({
     latitude: 10.65274,
     longitude: -71.63019,
@@ -129,14 +131,18 @@ const MapScreen = () => {
             color="black"
           />
         </View>
+         
+         <Pressable onPress={() => navigation.navigate('browser')}>
+
         <View style={styles.search}>
           <AntDesign
             style={styles.iconSearch}
             name="search1"
             size={24}
             color="black"
-          />
+            />
         </View>
+            </Pressable>
         <View style={styles.requestServices}>
           <View style={styles.squareIcon}>
             <MaterialIcons

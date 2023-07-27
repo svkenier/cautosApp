@@ -4,8 +4,10 @@ import CustomInput from "../components/CustomInput";
 import useBrowserAddress from "../hooks/useBrowserAddress";
 import CustomButton from "../components/CustomButton";
 import MapScreen from "./MapScreen";
+import {useNavigation} from "@react-navigation/native"
 
 const BrowserScreen = () => {
+  const navigation = useNavigation()
   const { setAddress, address } = useBrowserAddress();
   console.log("first")
   return (
@@ -24,14 +26,13 @@ const BrowserScreen = () => {
           />
         </View>
 
-        <View>
-          <MapScreen />
-          <Text>probandoi</Text>
-        </View>
+        
         {/* boton */}
 
         <View style={{ marginBottom: 40, alignItems: "center" }}>
-          <CustomButton textButton="seleccionar en el mapa"
+          <CustomButton 
+          handlePress={() => navigation.goBack()}
+          textButton="seleccionar en el mapa"
             typeButton="terseary"
             typeText="secondary"
           />
@@ -46,7 +47,9 @@ const styles = StyleSheet.create({
   root: {
     alignItems: "center",
     padding: 10,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    flex:1,
+    zIndex:2,
   },
 
   fondo: {

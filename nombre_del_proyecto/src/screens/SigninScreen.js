@@ -2,16 +2,14 @@ import { View, Text, StyleSheet, Modal, SafeAreaView } from "react-native";
 import React, { useState } from "react";
 
 import CustomButton from "../components/CustomButton";
-import RegisterScreen from "./RegisterScreen";
 import LogoCautos from "../components/LogoCautos";
-import useModals from "../hooks/useModals";
 import PhoneInput from "react-native-phone-number-input";
+import {useNavigation} from "@react-navigation/native"
 
 const SigninScreen = () => {
+
   const [phone, setPhone] = useState("");
-  const { openModalRegister, handleModalRegister, closeAllModals } =
-    useModals();
-    console.log("login")
+    const navigation = useNavigation()
   return (
     <View style={styles.root}>
       <View style={styles.fondo}>
@@ -33,21 +31,16 @@ const SigninScreen = () => {
           textButton="continuar"
           typeButton="primary"
           typeText="primary"
+          handlePress={() => navigation.navigate('map')}
         />
 
         <CustomButton
           textButton="registrate"
           typeButton="secondary"
           typeText="primary"
-          handlePress={handleModalRegister}
+          handlePress={() => navigation.navigate('register')}
         />
       </View>
-
-      <Modal visible={openModalRegister} animationType="slide">
-        <SafeAreaView style={styles.fondo}>
-          <RegisterScreen closeAllModals={closeAllModals} />
-        </SafeAreaView>
-      </Modal>
     </View>
   );
 };
@@ -56,6 +49,9 @@ const styles = StyleSheet.create({
   root: {
     alignItems: "center",
     padding: 10,
+    flex:1,
+    backgroundColor:
+    "linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)",
   },
   containerText: {
     width: "100%",
@@ -75,8 +71,7 @@ const styles = StyleSheet.create({
   },
   fondo: {
     width: "100%",
-    backgroundColor:
-      "linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)",
+   
   },
 });
 

@@ -35,7 +35,7 @@ const StepperForm = () => {
     <Formik
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      // validationSchema={validationSchema}
+       validationSchema={validationSchema}
     >
       {({ handleSubmit }) => (
         <View style={{ marginVertical: 5, marginHorizontal: 20 }}>

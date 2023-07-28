@@ -23,6 +23,7 @@ const UserAndPassInfo = () => {
           value={values.userName}
           helperText={errors.userName && touched.userName && <Text style={styles.error}>{errors.userName}</Text> }
           onBlur={handleBlur("userName")}
+          icon="user"
         />
         <CustomInput
           placeholder={"Contraseña"}
@@ -31,6 +32,7 @@ const UserAndPassInfo = () => {
           value={values.password}
           helperText={errors.password && touched.password && <Text style={styles.error}>{errors.password}</Text> }
           onBlur={handleBlur("password")}
+          icon="lock"
         />
         <CustomInput
           placeholder={"Confirmar Contraseña"}
@@ -39,6 +41,7 @@ const UserAndPassInfo = () => {
           value={values.confirmPassword}
           helperText={errors.confirmPassword && touched.confirmPassword && <Text style={styles.error}>{errors.confirmPassword}</Text> }
           onBlur={handleBlur("confirmPassword")}
+          icon="lock"
         />
       </View>
     </View>

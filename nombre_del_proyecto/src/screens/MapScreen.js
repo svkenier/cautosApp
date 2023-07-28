@@ -21,10 +21,7 @@ const MapScreen = () => {
     longitude: -71.63019,
   });
 
-  const [destination, setDestination] = useState({
-    latitude: 10.6450975,
-    longitude: -71.6098553
-  });
+  const [destination, setDestination] = useState([]);
 
   const getCurrentPosition = async () => {
     const currentPosition = await Location.getCurrentPositionAsync({});
@@ -57,12 +54,14 @@ const MapScreen = () => {
 
   useEffect(() => {
     const getLocationInfo = async () => {
+      console.log("destination", destination)
+
       Location.geocodeAsync(address)
         .then((result) => {
           const latitude = result[0].latitude;
           const longitude = result[0].longitude;
 
-          setDestination({ latitude, longitude });
+          setDestination([...destination,{ latitude, longitude }]);
         })
         .catch((error) => console.log(error));
     };
@@ -89,23 +88,39 @@ const MapScreen = () => {
           draggable={true}
           onDragEnd={(direction) => setOrigin(direction.nativeEvent.coordinate)}
         />
-        <Marker
+
+
+        {
+          destination.length !== 0 ? destination.map((item)=>(
+            <>
+            <Marker
           coordinate={{
-            latitude: destination.latitude,
-            longitude: destination.longitude,
+            latitude: item.latitude,
+            longitude: item.longitude,
           }}
           draggable={true}
           onDragEnd={(direction) =>
             setDestination(direction.nativeEvent.coordinate)
           }
         />
+        
+
         <MapViewDirections
           origin={{ latitude: origin.latitude, longitude: origin.longitude }}
-          destination={destination}
+          destination={{ latitude: item.latitude, longitude: item.longitude }}
+          apikey={GOOGLE_MAPS_KEY}
+          strokeColor="#3C5DDC"
+          strokeWidth={4}
+        />  </> )):
+
+        <MapViewDirections
+          origin={{ latitude: origin.latitude, longitude: origin.longitude }}
           apikey={GOOGLE_MAPS_KEY}
           strokeColor="#3C5DDC"
           strokeWidth={4}
         />
+
+      } 
       </MapView>
 
    

@@ -88,13 +88,17 @@ const styles = StyleSheet.create({
   title: {
     display: "flex",
     flexDirection: "row",
-    width: "80%",
-    maxHeight: 100,
-    justifyContent: "center",
-  },
-  icon: { width: "10%" },
+    width: "90%",
+    justifyContent: "flex-start",
+    
 
-  ContainerText: { width: "90%", alignItems: "center" },
+  },
+  icon: { 
+    width: "12%",
+    marginTop:30
+  },
+
+  ContainerText: { width: "90%", alignItems: "center",marginTop:30 },
 });
 
 export default RegisterScreen;

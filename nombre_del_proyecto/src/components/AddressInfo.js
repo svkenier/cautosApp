@@ -23,14 +23,16 @@ const AddressInfo = () => {
           value={values.city}
           helperText={errors.city && touched.city && <Text style={styles.error}>{errors.city}</Text> }
           onBlur={handleBlur("city")}
+          icon="city"
         />
         <CustomInput
           placeholder={"Municipio"}
           onChangeText={handleChange("town")}
-          name="city"
+          name="town"
           value={values.town}
           helperText={errors.town && touched.town && <Text style={styles.error}>{errors.town}</Text> }
           onBlur={handleBlur("town")}
+          icon="location"
         />
       </View>
     </View>

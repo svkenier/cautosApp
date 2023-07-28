@@ -1,13 +1,17 @@
 import React from 'react'
 import { useState } from 'react'
 
-const useBrowserAddress = (destinationAddress) => {
-  const [address, setAddress] = useState(destinationAddress)
+
+const useBrowserAddress = () => {
+  const [address, setAddress] = useState("")
 
 
+  const handleAddress = (destinationAddress) =>{
+    setAddress(destinationAddress)
+  }
   return {
     address,
-    setAddress
+    handleAddress
 }
 }
 

@@ -21,6 +21,7 @@ const PersonalInfo = () => {
           value={values.name}
           helperText={errors.name && touched.name && <Text style={styles.error}>{errors.name}</Text> }
           onBlur={handleBlur("name")}
+          icon="user"
           />
           
 
@@ -31,6 +32,7 @@ const PersonalInfo = () => {
           value={values.lastName}
           helperText={errors.lastName && touched.lastName && <Text style={styles.error}>{errors.lastName}</Text> }
           onBlur={handleBlur("lastName")}
+          icon="user"
         />
 
         <CustomInput
@@ -40,6 +42,7 @@ const PersonalInfo = () => {
           value={values.email}
           helperText={errors.email && touched.email && <Text style={styles.error}>{errors.email}</Text> }
           onBlur={handleBlur("email")}
+          icon="email"
         />
         <CustomInput
           placeholder={"Cedula"}
@@ -48,6 +51,7 @@ const PersonalInfo = () => {
           value={values.cedula}
           helperText={errors.cedula && touched.cedula && <Text style={styles.error}>{errors.cedula}</Text> }
           onBlur={handleBlur("cedula")}
+          icon="id"
         />
         <CustomInput
           placeholder={"Telefono"}
@@ -56,6 +60,7 @@ const PersonalInfo = () => {
           value={values.phone}
           helperText={errors.cedula && touched.phone && <Text style={styles.error}>{errors.phone}</Text> }
           onBlur={handleBlur("phone")}
+          icon="phone"
         />
       </View>
     </View>
@@ -64,7 +69,6 @@ const PersonalInfo = () => {
 const styles = StyleSheet.create({
   root: {
     alignItems: "center",
-
     paddingTop: 5,
   },
 
@@ -80,7 +84,7 @@ const styles = StyleSheet.create({
   },
   containerInput: {
     gap:10,
-    width: "90%",
+    width: "95%",
     alignItems: "flex-end",
   },
   error:{

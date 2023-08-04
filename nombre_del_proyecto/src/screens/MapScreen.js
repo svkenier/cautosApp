@@ -1,4 +1,4 @@
-import { View, StyleSheet, SafeAreaView,Pressable } from "react-native";
+import { View, StyleSheet, SafeAreaView, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
@@ -11,25 +11,26 @@ import { Entypo } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import {useNavigation} from "@react-navigation/native"
+import { useNavigation } from "@react-navigation/native";
 
 const MapScreen = () => {
-  const navigation = useNavigation()
-  const { address } = useBrowserAddress("Parque Rafael Urdaneta, Av. Padilla C. 93, Maracaibo 4001, Zulia");
+  const navigation = useNavigation();
+  const { address,stops, handleDestination,setDestination } = useBrowserAddress();
   const [origin, setOrigin] = useState({
     latitude: 10.65274,
     longitude: -71.63019,
   });
+ 
+  
 
-  const [destination, setDestination] = useState([]);
 
   const getCurrentPosition = async () => {
     const currentPosition = await Location.getCurrentPositionAsync({});
     // console.log(
-    //   "currentPosition",
-    //   currentPosition.coords.latitude,
-    //   currentPosition.coords.longitude
-    // );
+    //  "currentPosition",
+    //    currentPosition.coords.latitude,
+    //    currentPosition.coords.longitude
+    //  );
     let latitude = currentPosition.coords.latitude;
     let longitude = currentPosition.coords.longitude;
 
@@ -38,6 +39,8 @@ const MapScreen = () => {
       longitude,
     });
   };
+
+  console.log(address)
 
   useEffect(() => {
     const requestPermissions = async () => {
@@ -52,21 +55,7 @@ const MapScreen = () => {
     requestPermissions();
   }, []);
 
-  useEffect(() => {
-    const getLocationInfo = async () => {
-      console.log("destination", destination)
 
-      Location.geocodeAsync(address)
-        .then((result) => {
-          const latitude = result[0].latitude;
-          const longitude = result[0].longitude;
-
-          setDestination([...destination,{ latitude, longitude }]);
-        })
-        .catch((error) => console.log(error));
-    };
-    getLocationInfo();
-  }, [address]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -88,54 +77,56 @@ const MapScreen = () => {
           draggable={true}
           onDragEnd={(direction) => setOrigin(direction.nativeEvent.coordinate)}
         />
-
-
-        {
-          destination.length !== 0 ? destination.map((item)=>(
+         { console.log("DETINO",stops)}
+        {stops.length !== 0 ? ( console.log("destination",stops)
+          /* destination.map((item) => (
             <>
-            <Marker
-          coordinate={{
-            latitude: item.latitude,
-            longitude: item.longitude,
-          }}
-          draggable={true}
-          onDragEnd={(direction) =>
-            setDestination(direction.nativeEvent.coordinate)
-          }
-        />
-        
-
-        <MapViewDirections
-          origin={{ latitude: origin.latitude, longitude: origin.longitude }}
-          destination={{ latitude: item.latitude, longitude: item.longitude }}
-          apikey={GOOGLE_MAPS_KEY}
-          strokeColor="#3C5DDC"
-          strokeWidth={4}
-        />  </> )):
-
-        <MapViewDirections
-          origin={{ latitude: origin.latitude, longitude: origin.longitude }}
-          apikey={GOOGLE_MAPS_KEY}
-          strokeColor="#3C5DDC"
-          strokeWidth={4}
-        />
-
-      } 
+              <Marker
+                coordinate={{
+                  latitude: item.latitude,
+                  longitude: item.longitude,
+                }}
+                draggable={true}
+                onDragEnd={(direction) =>
+                  setStops(direction.nativeEvent.coordinate)
+                }
+              />
+              <MapViewDirections
+                origin={{
+                  latitude: origin.latitude,
+                  longitude: origin.longitude,
+                }}
+                destination={{
+                  latitude: item.latitude,
+                  longitude: item.longitude,
+                }}
+                apikey={GOOGLE_MAPS_KEY}
+                strokeColor="#3C5DDC"
+                strokeWidth={4}
+              />{" "}
+            </>
+          ))*/
+        )  : (
+          <MapViewDirections
+            origin={{ latitude: origin.latitude, longitude: origin.longitude }}
+            apikey={GOOGLE_MAPS_KEY}
+            strokeColor="#3C5DDC"
+            strokeWidth={4}
+          />
+        )}
       </MapView>
 
-   
-        <View style={styles.menu}>
-          <Entypo style={styles.iconMenu} name="menu" size={24} color="black" />
-        </View>
-        <View style={styles.myLocation}>
-          <MaterialIcons
-            style={styles.iconMyLocation}
-            name="my-location"
-            size={24}
-            color="black"
-          />
-        </View>
-    
+      <View style={styles.menu}>
+        <Entypo style={styles.iconMenu} name="menu" size={24} color="black" />
+      </View>
+      <View style={styles.myLocation}>
+        <MaterialIcons
+          style={styles.iconMyLocation}
+          name="my-location"
+          size={24}
+          color="black"
+        />
+      </View>
 
       <View style={styles.containericonsDown}>
         <View style={styles.stopList}>
@@ -146,18 +137,17 @@ const MapScreen = () => {
             color="black"
           />
         </View>
-         
-         <Pressable onPress={() => navigation.navigate('browser')}>
 
-        <View style={styles.search}>
-          <AntDesign
-            style={styles.iconSearch}
-            name="search1"
-            size={24}
-            color="black"
+        <Pressable onPress={() => navigation.navigate("browser")}>
+          <View style={styles.search}>
+            <AntDesign
+              style={styles.iconSearch}
+              name="search1"
+              size={24}
+              color="black"
             />
-        </View>
-            </Pressable>
+          </View>
+        </Pressable>
         <View style={styles.requestServices}>
           <View style={styles.squareIcon}>
             <MaterialIcons
@@ -187,7 +177,7 @@ const styles = StyleSheet.create({
   },
   containericonsDown: {
     position: "absolute",
-    
+
     width: "15%",
     height: "23%",
     alignItems: "center",
@@ -249,34 +239,33 @@ const styles = StyleSheet.create({
   },
   menu: {
     position: "absolute",
-    backgroundColor:"#fff",
-    width:85,
-    height:55,
-    top:50,
-    left:-10,
-    borderRadius:10,
-    justifyContent:"center",
-    alignItems:"center",
-
+    backgroundColor: "#fff",
+    width: 85,
+    height: 55,
+    top: 50,
+    left: -10,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  iconMenu:{
-    fontSize:35,
+  iconMenu: {
+    fontSize: 35,
   },
 
-  myLocation:{
+  myLocation: {
     position: "absolute",
-    top:50,
-    right:10,
-    width:55,
-    height:55,
-    justifyContent:"center",
-    alignItems:"center",
-    backgroundColor:"#fff",
-    borderRadius:50,
+    top: 50,
+    right: 10,
+    width: 55,
+    height: 55,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 50,
   },
-  iconMyLocation:{
-    fontSize:35,
-  }
+  iconMyLocation: {
+    fontSize: 35,
+  },
 });
 
 export default MapScreen;

@@ -1,65 +1,89 @@
 import React from "react";
-import { View, StyleSheet, Text, SafeAreaView,onPress } from "react-native";
-import CustomInput from "../components/CustomInput";
+import { useState,useRef  } from "react";
+import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import useBrowserAddress from "../hooks/useBrowserAddress";
 import CustomButton from "../components/CustomButton";
-import MapScreen from "./MapScreen";
-import {useNavigation} from "@react-navigation/native"
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { useNavigation } from "@react-navigation/native";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { GOOGLE_MAPS_KEY } from "@env";
 
 const BrowserScreen = () => {
-  const navigation = useNavigation()
-  const { handleAddress, address } = useBrowserAddress();
+  
+  
+
+  const [inputAdrees,setInputAddress] = useState("")
+  const navigation = useNavigation();
+  const GooglePlacesRef = useRef();
+  const { setStops,stops,handleAddress,address,setAddress } = useBrowserAddress();
+
+  const getDireccion =(details)=>{
+    setInputAddress(details.description)
+    const { lat,lng } = details.geometry.location;
+    let coordeneadas = {latitude:lat,longitude:lng}
+    handleAddress(coordeneadas)
+    console.log("cordenadas", coordeneadas);
+   
+  }
+
+  const handleClear =() =>{
+    GooglePlacesRef.current?.clear();
+  }
+
+
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.fondo}>
         {/* titulo y buscador */}
-        <View style={{ marginTop: 60, alignItems: "center", gap: 20 }}>
+        <View style={styles.containerTitleAndBrowser}>
+          <Text style={styles.title}>¿A DONDE QUIERES IR?</Text>
+      
+          <GooglePlacesAutocomplete
 
-          <Text style={{ fontSize: 20, fontWeight: "bold", color: "#020126" }} >¿A DONDE QUIERES IR?</Text>
 
+            placeholder="Ingresa una dirección"
            
+            value={address}
+          
+            ref={GooglePlacesRef}
 
-<GooglePlacesAutocomplete
-  placeholder='Ingresa una dirección'
-  onPress={(data, details = null) => {
-    const {description} = data
-    console.log("description",description);
-    handleAddress(description)
-    navigation.goBack()
+            onPress={(data, details = null) => {
+              getDireccion(details)
+              console.log("direccion",stops );
+              
+            
+              
+              
+            }}
+            query={{
+              key: GOOGLE_MAPS_KEY,
+              language: "es",
+              types: "address",
+              components: 'country:ve'
+            }}
+            
 
-     // const { lat, lng } = details.geometry.location;
-    // console.log("ubicacion de  Browser",{lat,lng});
-  }}
-  query={{
-    key: GOOGLE_MAPS_KEY,
-    language: 'es',
-    types: 'address',
-    components: 'country:ve'
-  }}
-  styles={{
-    container: { position: 'absolute', top: 0, left: 0, right: 0,width:"100%" ,paddingHorizontal:15,marginTop:55 },
-    textInput:{borderColor:"#888",borderWidth:1,borderRadius:20, },
-    listView: { backgroundColor: 'white' }
-  }}
-/>
+            styles={styles.autocompleteInput}
+
+            fetchDetails={true}
+
+          />
         </View>
 
-        
+            <View>
+              {stops.map(({latitude,longitude},index)=> <Text key={index}>{latitude +"-" +longitude}</Text>)}
+            </View>
+
+
         {/* boton */}
 
-        <View style={{ marginBottom: 40, alignItems: "center" }}>
-         <CustomButton 
-          handlePress={() => navigation.goBack()}
-          textButton="seleccionar en el mapa"
+        <View style={styles.containerButton}>
+          <CustomButton
+            handlePress={() => navigation.goBack()}
+            textButton="seleccionar en el mapa"
             typeButton="terseary"
             typeText="secondary"
-          /> 
-
-
+          />
         </View>
-
       </View>
     </SafeAreaView>
   );
@@ -69,17 +93,36 @@ const styles = StyleSheet.create({
   root: {
     alignItems: "center",
     padding: 10,
-    backgroundColor: '#fff',
-    flex:1,
-    zIndex:2,
+    backgroundColor: "#fff",
+    flex: 1,
+    zIndex: 2,
   },
 
   fondo: {
     width: "100%",
     height: "100%",
-    justifyContent: "space-between"
-
+    justifyContent: "space-between",
   },
+  containerButton: {
+    marginBottom: 40,
+    alignItems: "center",
+  },
+  autocompleteInput: {
+    container: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      width: "100%",
+      paddingHorizontal: 15,
+      marginTop: 55,
+    },
+    textInput: { borderColor: "#888", borderWidth: 1, borderRadius: 20 },
+    listView: { backgroundColor: "white" },
+  },
+  containerTitleAndBrowser: { marginTop: 60, alignItems: "center", gap: 20 },
+
+  title: { fontSize: 20, fontWeight: "bold", color: "#020126" },
 });
 
 export default BrowserScreen;

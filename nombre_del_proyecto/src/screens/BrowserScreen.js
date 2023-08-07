@@ -1,5 +1,5 @@
 import React from "react";
-import { useState,useRef  } from "react";
+import { useState,useRef ,useContext } from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import useBrowserAddress from "../hooks/useBrowserAddress";
 import CustomButton from "../components/CustomButton";
@@ -9,20 +9,19 @@ import { GOOGLE_MAPS_KEY } from "@env";
 
 const BrowserScreen = () => {
   
-  
+ 
 
   const [inputAdrees,setInputAddress] = useState("")
   const navigation = useNavigation();
   const GooglePlacesRef = useRef();
-  const { setStops,stops,handleAddress,address,setAddress } = useBrowserAddress();
+  const { addStop,address} = useBrowserAddress();
 
   const getDireccion =(details)=>{
     setInputAddress(details.description)
     const { lat,lng } = details.geometry.location;
     let coordeneadas = {latitude:lat,longitude:lng}
-    handleAddress(coordeneadas)
-    console.log("cordenadas", coordeneadas);
-   
+    addStop(coordeneadas)
+    
   }
 
   const handleClear =() =>{
@@ -48,7 +47,7 @@ const BrowserScreen = () => {
 
             onPress={(data, details = null) => {
               getDireccion(details)
-              console.log("direccion",stops );
+              
               
             
               
@@ -69,17 +68,15 @@ const BrowserScreen = () => {
           />
         </View>
 
-            <View>
-              {stops.map(({latitude,longitude},index)=> <Text key={index}>{latitude +"-" +longitude}</Text>)}
-            </View>
-
+            
 
         {/* boton */}
 
         <View style={styles.containerButton}>
           <CustomButton
-            handlePress={() => navigation.goBack()}
-            textButton="seleccionar en el mapa"
+             handlePress={() => navigation.goBack()}
+          
+            textButton="SELECCIONAR EN EL MAPA"
             typeButton="terseary"
             typeText="secondary"
           />

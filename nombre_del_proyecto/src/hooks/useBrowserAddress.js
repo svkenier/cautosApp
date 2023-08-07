@@ -1,75 +1,32 @@
 
-import { useState, useEffect } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState,useContext } from 'react'
+import { StopsContext } from '../context/StopsContext.jsx';
+
+
 
 
 const useBrowserAddress = () => {
-  const [address, setAddress] = useState({})
-  const [stops, setStops] = useState([]);
 
-  console.log("address use", address)
+  const {setStops,stops} = useContext(StopsContext)
+  const [address, setAddress] = useState({})
   
+  const currentTime = new Date().getTime();
+
+
   
-  const handleAddress = (destinationAddress) =>{
+  const addStop = (destinationAddress) =>{
     setAddress(destinationAddress)
-    setStops([...stops,destinationAddress])
-    console.log('destino',stops); 
+    setStops([...stops,{...destinationAddress ,title:"parada",id:currentTime}])
+     
     
   }
 
-  useEffect(() => {
-    const storeData = async (value) => {
-      try {
-        const jsonValue = JSON.stringify(value);
-        await AsyncStorage.setItem('stops', jsonValue);
-      } catch (e) {
-        console.log( "saving error")
-      }
-    };
-    storeData(stops);
-    }, [stops])
- 
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const jsonValue = await AsyncStorage.getItem('stops');
-         if (jsonValue != null) {
-            let result = JSON.parse(jsonValue)
-            setStops(result )
-            console.log("AQUI",result)
-         } ;
-        
-      } catch (e) {
-        console.log(" error reading value")
-      }
-    };
-
-    getData()
-
-
-
-
-
- }, [])
-
-
-
-
-
-
-  const handleDestination = () =>{
-  }
-  console.log("destinaion use", stops)
-
-
-  
   return {
     address,
-    stops,
-    handleAddress,
+    addStop,
     setAddress,
-    setStops
+  
+    
 }
 }
 

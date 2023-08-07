@@ -1,5 +1,5 @@
 import { View, StyleSheet, SafeAreaView, Pressable } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import * as Location from "expo-location";
@@ -12,10 +12,12 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { StopsContext } from "../context/StopsContext";
 
 const MapScreen = () => {
   const navigation = useNavigation();
-  const { address,stops, handleDestination,setDestination } = useBrowserAddress();
+  const {stops} = useContext(StopsContext)
+  const { address} = useBrowserAddress();
   const [origin, setOrigin] = useState({
     latitude: 10.65274,
     longitude: -71.63019,
@@ -129,14 +131,17 @@ const MapScreen = () => {
       </View>
 
       <View style={styles.containericonsDown}>
+      <Pressable onPress={() => navigation.navigate("stopsList")}>
+
         <View style={styles.stopList}>
           <FontAwesome5
             style={styles.iconStopList}
             name="tasks"
             size={24}
             color="black"
-          />
+            />
         </View>
+            </Pressable>
 
         <Pressable onPress={() => navigation.navigate("browser")}>
           <View style={styles.search}>

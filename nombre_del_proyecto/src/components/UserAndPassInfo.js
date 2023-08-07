@@ -3,8 +3,7 @@ import { Text, View, StyleSheet } from "react-native";
 
 import CustomInput from "./CustomInput";
 import { Formik, useFormikContext } from "formik";
-import * as Yup from "yup";
-import useForm from "../hooks/useForm";
+
 
 const UserAndPassInfo = () => {
   const { values, handleChange,handleBlur,errors,touched } = useFormikContext();

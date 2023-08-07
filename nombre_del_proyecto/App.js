@@ -4,12 +4,15 @@ import MainApp from "./src/screens/MainApp";
 import MapScreen from "./src/screens/MapScreen";
 
 
+
+
 export default function App() {
   return (
-
+    
     <SafeAreaView style={styles.root}>
       <MainApp />
     </SafeAreaView>
+   
   );
 }
 

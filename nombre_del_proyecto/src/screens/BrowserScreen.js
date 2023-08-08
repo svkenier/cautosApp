@@ -75,10 +75,11 @@ const BrowserScreen = () => {
         <View style={styles.containerButton}>
           <CustomButton
              handlePress={() => navigation.goBack()}
-          
             textButton="SELECCIONAR EN EL MAPA"
             typeButton="terseary"
             typeText="secondary"
+            iconLeft="back"
+            iconRight="map"
           />
         </View>
       </View>

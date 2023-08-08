@@ -1,5 +1,5 @@
-import { View, StyleSheet, SafeAreaView, Pressable } from "react-native";
-import React, { useEffect, useState,useContext } from "react";
+import { View, StyleSheet, SafeAreaView, Pressable,Text } from "react-native";
+import React, { useEffect, useState,useContext,useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import * as Location from "expo-location";
@@ -22,17 +22,13 @@ const MapScreen = () => {
     latitude: 10.65274,
     longitude: -71.63019,
   });
- 
+  const mapViewRef = useRef(null);
   
 
 
   const getCurrentPosition = async () => {
     const currentPosition = await Location.getCurrentPositionAsync({});
-    // console.log(
-    //  "currentPosition",
-    //    currentPosition.coords.latitude,
-    //    currentPosition.coords.longitude
-    //  );
+   
     let latitude = currentPosition.coords.latitude;
     let longitude = currentPosition.coords.longitude;
 
@@ -40,6 +36,16 @@ const MapScreen = () => {
       latitude,
       longitude,
     });
+
+    const newRegion = {
+      latitude: origin.latitude,
+      longitude: origin.longitude,
+      latitudeDelta: 0.01,
+      longitudeDelta: 0.01,
+    }
+
+    mapViewRef.current.animateToRegion(newRegion);
+
   };
 
   console.log(address)
@@ -49,6 +55,7 @@ const MapScreen = () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         // El usuario no ha otorgado permiso para acceder a la ubicación
+       
       }
 
       getCurrentPosition();
@@ -68,6 +75,7 @@ const MapScreen = () => {
           latitudeDelta: 0.09,
           longitudeDelta: 0.04,
         }}
+        ref={mapViewRef}
         style={styles.map}
         provider="google"
       >
@@ -79,19 +87,20 @@ const MapScreen = () => {
           draggable={true}
           onDragEnd={(direction) => setOrigin(direction.nativeEvent.coordinate)}
         />
-         { console.log("DETINO",stops)}
-        {stops.length !== 0 ? ( console.log("destination",stops)
-          /* destination.map((item) => (
-            <>
+         
+        {stops.length !== 0 ? ( 
+           stops.map((item) => (
+            <Text key={item.id}>
               <Marker
                 coordinate={{
                   latitude: item.latitude,
                   longitude: item.longitude,
                 }}
                 draggable={true}
-                onDragEnd={(direction) =>
+                 onDragEnd={(direction) =>
                   setStops(direction.nativeEvent.coordinate)
-                }
+
+                 }
               />
               <MapViewDirections
                 origin={{
@@ -106,8 +115,8 @@ const MapScreen = () => {
                 strokeColor="#3C5DDC"
                 strokeWidth={4}
               />{" "}
-            </>
-          ))*/
+            </Text>
+          ))
         )  : (
           <MapViewDirections
             origin={{ latitude: origin.latitude, longitude: origin.longitude }}
@@ -121,13 +130,16 @@ const MapScreen = () => {
       <View style={styles.menu}>
         <Entypo style={styles.iconMenu} name="menu" size={24} color="black" />
       </View>
+
       <View style={styles.myLocation}>
+      <Pressable onPress={()=>getCurrentPosition()}>
         <MaterialIcons
           style={styles.iconMyLocation}
           name="my-location"
           size={24}
           color="black"
-        />
+          />
+          </Pressable>
       </View>
 
       <View style={styles.containericonsDown}>
@@ -267,9 +279,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
     borderRadius: 50,
+    
   },
   iconMyLocation: {
     fontSize: 35,
+   
   },
 });
 
